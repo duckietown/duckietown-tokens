@@ -1,0 +1,9 @@
+*.pyc
+commands
+*egg-info
+dist
+cli
+.idea
+testing/ubuntu18/challenge-aido1_luck-template-python/
+key1.pem
+key1-pub.pem

@@ -5,7 +5,7 @@ logging.basicConfig()
 logger = logging.getLogger("duckietown-tokens ")
 logger.setLevel(logging.INFO)
 
-__version__ = "5.3.0"
+__version__ = "5.3.1"
 
 logger.info("duckietown-tokens %s" % __version__)
 

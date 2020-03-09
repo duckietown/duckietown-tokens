@@ -81,7 +81,7 @@ def create_signed_token(payload: bytes) -> DuckietownToken:
         s = b"duckietown is a place of relaxed introspection" * 100
         return s[:numbytes]
 
-    logger.info(f'signing payload {payload!r}')
+    logger.info(f"signing payload {payload!r}")
     signature = sk.sign(payload, entropy=entropy)
     return DuckietownToken(payload, signature)
 

@@ -33,7 +33,7 @@ setup(name=f'duckietown-tokens',
       install_requires=[
           'GitPython',
           'texttable',
-          'base58',
+          'base58<2',
           'ecdsa',
           'python-dateutil',
           'termcolor',

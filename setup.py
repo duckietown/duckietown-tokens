@@ -53,8 +53,8 @@ setup(name=f'duckietown-tokens',
       include_package_data=True,
 
       entry_points={
-          'console_scripts': [
-              'dts = dt_shell:cli_main',
-          ]
+          # 'console_scripts': [
+          #     'dts = dt_shell:cli_main',
+          # ]
       }
       )

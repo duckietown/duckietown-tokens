@@ -21,8 +21,9 @@ def get_version(filename):
 
 shell_version = get_version(filename='src/duckietown_tokens/__init__.py')
 
+line = 'daffy'
 
-setup(name=f'duckietown-tokens',
+setup(name=f'duckietown-tokens-{line}',
 
       version=shell_version,
       download_url='http://github.com/duckietown/duckietown-tokens/tarball/%s' % shell_version,

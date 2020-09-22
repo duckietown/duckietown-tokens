@@ -1,17 +1,19 @@
+import argparse
 import datetime
 import json
 import sys
 
 import dateutil.parser
+from ecdsa import SigningKey
 from future import builtins
 from . import logger
 
-from .duckietown_tokens import DuckietownToken, get_verify_key
+from .duckietown_tokens import create_signed_token, DuckietownToken, get_verify_key
 
-__all__ = ["verify_a_token_main"]
+__all__ = ["main_verify", "main_generate"]
 
 
-def verify_a_token_main(args=None):
+def main_verify(args=None):
     try:
         if args is None:
             args = sys.argv[1:]
@@ -73,3 +75,27 @@ def verify_a_token_main(args=None):
     except Exception as e:
         logger.error(str(e))
         sys.exit(3)
+
+
+def main_generate(args=None):
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--uid", type=int, help="ID to sign")
+    parser.add_argument("--key", type=str, help="Path to signing key")
+
+    args = parser.parse_args(args=args)
+
+    if args.key is None:
+        msg = "Please supply --key "
+        raise Exception(msg)
+    if args.uid is None:
+        msg = "Please supply --uid "
+        raise Exception(msg)
+
+    payload: str = json.dumps({"uid": args.uid, "exp": "2021-01-01"})
+    payload_bytes = payload.encode()
+    with open(args.key, "r") as _:
+        pem = _.read()
+    sk = SigningKey.from_pem(pem)
+    dt = create_signed_token(payload_bytes, sk)
+    token = dt.as_string()
+    print(token)

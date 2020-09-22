@@ -3,7 +3,7 @@ import os
 
 import base58
 import ecdsa
-from ecdsa import SigningKey, VerifyingKey
+from ecdsa import BadSignatureError, SigningKey, VerifyingKey
 
 from . import logger
 
@@ -74,8 +74,10 @@ ixOeCMGTO79Dbvw5dGmHJLYyNPwnKkWayyJS
     return VerifyingKey.from_pem(key1)
 
 
-def create_signed_token(payload: bytes) -> DuckietownToken:
-    sk: SigningKey = get_signing_key()
+def create_signed_token(payload: bytes, sk: SigningKey = None) -> DuckietownToken:
+    assert isinstance(payload, bytes), payload
+    if sk is None:
+        sk: SigningKey = get_signing_key()
 
     def entropy(numbytes: int) -> bytes:
         s = b"duckietown is a place of relaxed introspection" * 100
@@ -88,7 +90,26 @@ def create_signed_token(payload: bytes) -> DuckietownToken:
 
 def verify_token(token: DuckietownToken):
     vk: VerifyingKey = get_verify_key()
-    return vk.verify(token.signature, token.payload)
+    try:
+        sig_ok = vk.verify(token.signature, token.payload)
+    except BadSignatureError as e:
+        #
+        # if not sig_ok:
+        msg = "Signature is invalid"
+        raise InvalidToken(msg) from e
+    try:
+        data = json.loads(token.payload)
+    except:
+        msg = "Cannot load json"
+        raise InvalidToken(msg)
+
+    if "uid" not in data:
+        msg = '"uid" not present'
+        raise InvalidToken(msg)
+    uid = data["uid"]
+    if not isinstance(uid, int):
+        msg = f"uid {uid!r} is not an integer."
+        raise InvalidToken(msg)
 
 
 class InvalidToken(Exception):
@@ -105,6 +126,9 @@ def get_id_from_token(s: str) -> int:
     except ValueError:
         msg = "Invalid token format %r." % s
         raise InvalidToken(msg)
+
+    verify_token(token)
+
     try:
         data = json.loads(token.payload)
         uid = data["uid"]

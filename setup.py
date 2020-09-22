@@ -1,5 +1,3 @@
-import sys
-
 from setuptools import find_packages, setup
 
 
@@ -31,17 +29,7 @@ setup(
     packages=find_packages("src"),
     # we want the python 2 version to download it, and then exit with an error
     # python_requires='>=3.6',
-    install_requires=[
-        "GitPython",
-        "texttable",
-        "base58>=1,<2",
-        "ecdsa",
-        "python-dateutil",
-        "termcolor",
-        "PyYAML",
-        "six",
-        "future",
-    ],
+    install_requires=["texttable", "base58>=1,<2", "ecdsa", "python-dateutil", "future",],
     tests_require=[],
     # This avoids creating the egg file, which is a zip file, which makes our data
     # inaccessible by dir_from_package_name()

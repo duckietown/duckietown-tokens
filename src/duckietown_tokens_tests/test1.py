@@ -4,7 +4,6 @@ import os
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
-from ecdsa import BadSignatureError
 
 from duckietown_tokens import (
     verify_token,

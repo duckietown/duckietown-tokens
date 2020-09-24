@@ -5,16 +5,19 @@ bump-upload:
 	$(MAKE) bump
 	$(MAKE) upload
 
-bump:
+bump: # v2
 	bumpversion patch
-
-upload:
 	git push --tags
 	git push
+
+
+upload: # v2
+	aido-check-not-dirty
+	aido-check-tagged
 	rm -f dist/*
 	rm -rf src/*.egg-info
 	python setup.py sdist
-	twine upload dist/*
+	twine upload --skip-existing --verbose dist/*
 
 
 test:

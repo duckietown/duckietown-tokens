@@ -7,7 +7,7 @@ logger.setLevel(logging.INFO)
 
 __version__ = "6.0.5"
 
-logger.info("duckietown-tokens %s" % __version__)
+logger.debug(f"duckietown-tokens version {__version__}")
 
 from .duckietown_tokens import *
 from .tokens_cli import *

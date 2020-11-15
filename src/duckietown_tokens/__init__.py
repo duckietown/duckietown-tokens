@@ -5,7 +5,7 @@ logging.basicConfig()
 logger = logging.getLogger("duckietown-tokens ")
 logger.setLevel(logging.INFO)
 
-__version__ = "6.0.6"
+__version__ = "6.0.7"
 
 logger.debug(f"duckietown-tokens version {__version__} path {__file__}")
 

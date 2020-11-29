@@ -1,6 +1,5 @@
 import json
 import logging
-import os
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -11,7 +10,6 @@ from duckietown_tokens import (
     get_id_from_token,
     InvalidToken,
 )
-from duckietown_tokens.duckietown_tokens import private
 
 SAMPLE_TOKEN = (
     "dt1-9Hfd69b5ythetkCiNG12pKDrL987sLJT6KejWP2Eo5QQ"
@@ -77,9 +75,3 @@ def test_verify1():
     else:
         msg = "Expected invalid"
         raise Exception(msg)
-
-
-if __name__ == "__main__":
-    if os.path.exists(private):
-        tests_private()
-    test1()

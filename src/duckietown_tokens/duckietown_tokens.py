@@ -1,9 +1,10 @@
 import json
 import os
+from typing import cast
 
 import base58
-import ecdsa
-from ecdsa import BadSignatureError, SigningKey, VerifyingKey
+
+from ecdsa import BadSignatureError, SigningKey, VerifyingKey, NIST192p
 
 from . import logger
 
@@ -18,7 +19,7 @@ __all__ = [
 
 private = "key1.pem"
 public = "key1-pub.pem"
-curve = ecdsa.NIST192p
+curve = NIST192p
 
 
 class DuckietownToken:
@@ -50,20 +51,22 @@ class DuckietownToken:
 
 
 def get_signing_key() -> SigningKey:
-    """ Loads the key in the location "privatE" """
+    """ Loads the key in the location "private" """
     if not os.path.exists(private):
-        logger.info("Creating private key %r" % private)
+        logger.info(f"Creating private key {private!r}")
         sk0 = SigningKey.generate(curve=curve)
         with open(private, "wb") as f:
-            f.write(sk0.to_pem())
+            p = cast(bytes, sk0.to_pem())  # docstring is wrong
+            f.write(p)
 
         vk = sk0.get_verifying_key()
         with open(public, "wb") as f:
-            f.write(vk.to_pem())
+            q = cast(bytes, vk.to_pem())  # docstring is wrong
+            f.write(q)
     with open(private, "r") as _:
         pem = _.read()
     sk = SigningKey.from_pem(pem)
-    return sk
+    return cast(SigningKey, sk)
 
 
 def get_verify_key() -> VerifyingKey:

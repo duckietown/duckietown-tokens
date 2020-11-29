@@ -96,6 +96,7 @@ def main_generate(args=None):
     with open(args.key, "r") as _:
         pem = _.read()
     sk = SigningKey.from_pem(pem)
-    dt = create_signed_token(payload_bytes, sk)
+    # noinspection PyTypeChecker
+    dt = create_signed_token(payload_bytes, sk)  # XXX it says it's a verifying key
     token = dt.as_string()
     print(token)

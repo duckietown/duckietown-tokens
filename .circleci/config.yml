@@ -11,12 +11,18 @@ jobs:
             name: deps
             command: |
                 #apt install python-pip
-                pip install --user --upgrade -r requirements.txt
+                # pip install --user --upgrade -r requirements.txt
+                python3 -m pip install nosetests
 
         - run:
             name: build
             command: |
-              python setup.py install --user
+              python3 -m pip install -e .
+
+        - run:
+            name: build
+            command: |
+              nosetests duckietown_tokens_tests
 
         - run:
             name: dts help

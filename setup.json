@@ -1,0 +1,23 @@
+{
+  "install_requires": [
+    "base58>=1,<2",
+    "ecdsa",
+    "future",
+    "python-dateutil"
+  ],
+  "tests_require": [],
+  "srcdir": "src",
+  "package_name": "duckietown-tokens-daffy",
+  "entry_points": {
+    "console_scripts": []
+  },
+  "zip_safe": true,
+  "include_package_data": true,
+  "modules": [
+    "duckietown_tokens"
+  ],
+  "version": "6.0.14",
+  "author": "",
+  "author_email": "",
+  "url": ""
+}

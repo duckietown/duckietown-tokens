@@ -6,8 +6,8 @@ import sys
 import dateutil.parser
 from ecdsa import SigningKey
 from future import builtins
-from . import logger
 
+from . import logger
 from .duckietown_tokens import create_signed_token, DuckietownToken, get_verify_key
 
 __all__ = ["main_verify", "main_generate"]
@@ -81,6 +81,7 @@ def main_generate(args=None):
     parser = argparse.ArgumentParser()
     parser.add_argument("--uid", type=int, help="ID to sign")
     parser.add_argument("--key", type=str, help="Path to signing key")
+    parser.add_argument("--ndays", type=int, default=365, help="Number of days for validity")
 
     args = parser.parse_args(args=args)
 
@@ -91,7 +92,13 @@ def main_generate(args=None):
         msg = "Please supply --uid "
         raise Exception(msg)
 
-    payload: str = json.dumps({"uid": args.uid, "exp": "2021-01-01"})
+    ndays = 365
+
+    d = datetime.datetime.now()
+    until = d + datetime.timedelta(days=ndays)
+    exp = until.strftime(f"%Y-%m-%d")
+
+    payload: str = json.dumps({"uid": args.uid, "exp": exp})
     payload_bytes = payload.encode()
     with open(args.key, "r") as _:
         pem = _.read()
@@ -99,4 +106,5 @@ def main_generate(args=None):
     # noinspection PyTypeChecker
     dt = create_signed_token(payload_bytes, sk)  # XXX it says it's a verifying key
     token = dt.as_string()
+    print(payload)
     print(token)

@@ -51,7 +51,7 @@ class DuckietownToken:
 
 
 def get_signing_key() -> SigningKey:
-    """ Loads the key in the location "private" """
+    """Loads the key in the location "private" """
     if not os.path.exists(private):
         logger.info(f"Creating private key {private!r}")
         sk0 = SigningKey.generate(curve=curve)
@@ -121,7 +121,7 @@ class InvalidToken(Exception):
 
 def get_id_from_token(s: str) -> int:
     """
-        Returns a numeric ID from the token, or raises InvalidToken.
+    Returns a numeric ID from the token, or raises InvalidToken.
 
     """
     try:
